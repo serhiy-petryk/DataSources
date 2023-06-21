@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Data.OleDb;
+using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -49,6 +50,48 @@ namespace Tests_Data.DataReaders
                 }
                 sw.Stop();
                 Debug.Print($"Sqlite read select: {sw.ElapsedMilliseconds:N0} msecs");
+            }
+        }
+
+        [TestMethod]
+        public void MdbReaderTest()
+        {
+
+            using (var conn = new OleDbConnection(Settings.MdbConnectionString))
+            using (var cmd = new OleDbCommand($"SELECT * from Customers", conn))
+            {
+                conn.Open();
+                var rdr = cmd.ExecuteReader();
+                var sw = new Stopwatch();
+                sw.Start();
+                while (rdr.Read())
+                {
+                    var aa = new object[100];
+                    rdr.GetValues(aa);
+                }
+                sw.Stop();
+                Debug.Print($"Mdv read select: {sw.ElapsedMilliseconds:N0} msecs");
+            }
+        }
+
+        [TestMethod]
+        public void AccdbReaderTest()
+        {
+
+            using (var conn = new OleDbConnection(Settings.AccdbConnectionString))
+            using (var cmd = new OleDbCommand($"SELECT * from Customers", conn))
+            {
+                conn.Open();
+                var rdr = cmd.ExecuteReader();
+                var sw = new Stopwatch();
+                sw.Start();
+                while (rdr.Read())
+                {
+                    var aa = new object[100];
+                    rdr.GetValues(aa);
+                }
+                sw.Stop();
+                Debug.Print($"Mdv read select: {sw.ElapsedMilliseconds:N0} msecs");
             }
         }
     }
