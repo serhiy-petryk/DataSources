@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataProviders\DataProviders.csproj" />
+    <ProjectReference Include="..\DSCore\DSCore.csproj" />
   </ItemGroup>
 
 </Project>

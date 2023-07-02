@@ -9,12 +9,12 @@ namespace DSCore.Tests
     {
         public static void ExeConsoleApp()
         {
-            var m = MemoryUsedInBytes();
+            var m = Helpers.Misc.MemoryUsedInBytes();
             var x1 = Helpers.Assemblies.GetAllAssemblies().Distinct().ToList();
             var dbType = Helpers.Assemblies.GetInheritedTypes(typeof(DbConnection)).ToList();
             var t1 = x1.SelectMany(a => a.GetTypes()).Where(t => !t.IsAbstract && t.GetInterfaces().Contains(typeof(IDbConnection)))
               .ToList();
-            var m1 = MemoryUsedInBytes();
+            var m1 = Helpers.Misc.MemoryUsedInBytes();
             var ole = dbType.Where(t => t.Name.ToLower().Contains("oledb")).ToList()[0];
             // var sqlCe = dbType.Where(t => t.Name.ToLower().Contains("sqlce")).ToList()[0];
             var sqLite = dbType.Where(t => t.Name.ToLower().Contains("sqlite")).ToList()[0];
@@ -46,16 +46,6 @@ namespace DSCore.Tests
             }
             Console.WriteLine($"m1: {m1 / 1024}. End!");
             Console.ReadLine();
-        }
-
-        private static long MemoryUsedInBytes()
-        {
-            // clear memory
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
-            //
-            return GC.GetTotalMemory(true);
         }
     }
 
