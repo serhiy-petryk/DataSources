@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DSCore.Helpers;
@@ -10,17 +11,47 @@ namespace DSCore.Core
     public class DSInMemory : DSBase
     {
         private readonly MethodInfo _miGetData;
-        public Type ElementType => _miGetData?.ReturnType.GetElementType();
+        public Type ReturnType => _miGetData?.ReturnType;
+        public Type ElementType
+        {
+            get
+            {
+                var returnType = _miGetData?.ReturnType;
+                if (returnType != null && ReturnType.GetElementType() != null)
+                    return ReturnType.GetElementType();
+                if (returnType != null && returnType.GenericTypeArguments.Length == 1)
+                    return ReturnType.GenericTypeArguments[0];
+                if (returnType != null && returnType.GetGenericArguments().Length > 0)
+                    return null;
+
+
+                var t = Helpers.Types.GetItemProperty(returnType);
+                var a = GetData();
+                var a2 = GetData().Cast<object>().ToArray();
+                if (returnType.Name.Contains("ArraySegment"))
+                {
+
+                }
+                Debug.Print($"No element type: {returnType}");
+
+                return null;
+                // return _miGetData?.ReturnType.GetElementType();
+            }
+        }
 
         public DSInMemory(string connectionString) : base(connectionString, null)
         {
             // var x1 = Encoding.GetEncodings();
             var methodName = GetDataSourceName();
-            var mm = Assemblies.GetAllAssemblies().SelectMany(a => a.GetTypes())
-                .SelectMany(t => t.GetMethods(BindingFlags.Static | BindingFlags.Public))
-                .Where(m => $"{m.ReflectedType.FullName}.{m.Name}" == methodName).ToList();
+            var n1 = Assemblies.GetAllAssemblies().SelectMany(a => a.GetTypes()).Where(t=>t.IsPublic).ToArray();
+            var n2 = Assemblies.GetAllAssemblies().SelectMany(a => a.GetTypes()).Distinct().ToArray();
+            var mm = Assemblies.GetAllAssemblies().SelectMany(a => a.GetTypes()).Where(t => t.IsPublic)
+                .SelectMany(t => t.GetMethods(BindingFlags.Static | BindingFlags.Public)).Where(m =>
+                    $"{m.ReflectedType.FullName}.{m.Name}" == methodName && m.GetParameters().Length == 0 &&
+                    typeof(IEnumerable).IsAssignableFrom(m.ReturnType) &&
+                    !typeof(string).IsAssignableFrom(m.ReturnType)).ToArray();
 
-            if (mm.Count == 1)
+            if (mm.Length == 1)
                 _miGetData = mm[0];
             else
                 throw new Exception("Invalid method reference in connection string: " + connectionString);
@@ -45,7 +76,14 @@ namespace DSCore.Core
 
         public override IEnumerable GetData()
         {
-            return (IEnumerable)_miGetData.Invoke(null, null);
+            try
+            {
+                return (IEnumerable) _miGetData.Invoke(null, null);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
     }
