@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests_Data", "Tests_Data\Tests_Data.csproj", "{DBD9DEF9-DA71-4E62-B37B-85310A676A74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTests", "ConsoleTests\ConsoleTests.csproj", "{A2A938D7-B942-4BE8-A5FA-1EA99A044ABF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTests", "ConsoleTests\ConsoleTests.csproj", "{A2A938D7-B942-4BE8-A5FA-1EA99A044ABF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGCore", "DGCore\DGCore.csproj", "{E9837658-02DE-4627-8F76-FC7B9F59721D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A2A938D7-B942-4BE8-A5FA-1EA99A044ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2A938D7-B942-4BE8-A5FA-1EA99A044ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2A938D7-B942-4BE8-A5FA-1EA99A044ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9837658-02DE-4627-8F76-FC7B9F59721D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9837658-02DE-4627-8F76-FC7B9F59721D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9837658-02DE-4627-8F76-FC7B9F59721D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9837658-02DE-4627-8F76-FC7B9F59721D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
